@@ -2,25 +2,29 @@
   "name": "smap",
   "version": "0.0.0",
   "description": "",
-  "main": "bundle.js",
-  "directories": {
-    "example": "example"
-  },
-  "dependencies": {
-    "babel-core": "^5.0.12",
-    "babel-loader": "^5.0.0",
-    "css-loader": "^0.10.1",
-    "google-maps": "^2.1.1",
-    "joii": "^3.0.6",
-    "ramda": "^0.13.0",
-    "style-loader": "^0.10.1",
-    "traceur-loader": "^0.6.3",
-    "webpack": "^1.8.4"
-  },
-  "devDependencies": {},
+  "author": "cotne nazarashvili <cotne.95@gmail.com>",
+  "homepage": "https://github.com/thecotne/smap",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": ".\\node_modules\\.bin\\jasmine .\\dist\\spec.bundle.js"
   },
-  "author": "",
+  "main": "bundle.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thecotne/smap.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thecotne/smap/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "5.*",
+    "babel-loader": "5.*",
+    "gulp": "3.*",
+    "gulp-rename": "1.*",
+    "gulp-webpack": "1.*",
+    "jasmine": "2.*",
+    "vinyl-named": "1.*",
+    "webpack": "1.*"
+  },
   "license": "MIT"
 }
