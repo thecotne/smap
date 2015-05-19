@@ -1,4 +1,5 @@
-var R = require('ramda');
+import {concat, find, propEq} from 'ramda';
+
 var defaultIcons = [{
 	id: 0,
 	thumb: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png',
@@ -9,12 +10,12 @@ var defaultIcons = [{
 
 export class MarkerIcons {
 	constructor (icons = []) {
-		this.icons = R.concat(defaultIcons, icons);
+		this.icons = concat(defaultIcons, icons);
 	}
 	get (index) {
 		return this.icons[index];
 	}
-	getById (id){
-		return R.find(R.propEq('id', id), this.icons);
+	getById (id) {
+		return find(propEq('id', id), this.icons);
 	}
 }
