@@ -1,0 +1,1 @@
+import './MarkerIcons.spec';
