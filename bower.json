@@ -1,0 +1,17 @@
+{
+  "name": "smap",
+  "main": "dist/index.bundle.js",
+  "version": "1.0.0",
+  "authors": [
+    "cotne nazarashvili <cotne.nazarashvili@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "ramda": "~0.14.0"
+  }
+}
