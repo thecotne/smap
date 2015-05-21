@@ -21,6 +21,7 @@
     "babel-loader": "5.*",
     "gulp": "3.*",
     "gulp-rename": "1.*",
+    "gulp-watch": "4.*",
     "gulp-webpack": "1.*",
     "jasmine": "2.*",
     "vinyl-named": "1.*",

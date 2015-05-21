@@ -4,6 +4,7 @@ var webpack = require('webpack');
 var named = require('vinyl-named');
 var rename = require('gulp-rename');
 var path = require('path');
+var watch = require('gulp-watch');
 
 
 gulp.task('js', function () {
@@ -38,5 +39,7 @@ gulp.task('js', function () {
 gulp.task('default', ['js']);
 
 gulp.task('watch', ['default'], function() {
-	gulp.watch(['src/**/**.js', 'spec/**/**.js'], ['js']);
+	watch(['src/**/**.js', 'spec/**/**.js'], function() {
+		gulp.start(['js']);
+	});
 });
