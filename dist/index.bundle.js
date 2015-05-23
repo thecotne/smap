@@ -44,21 +44,71 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(2);
+	module.exports = __webpack_require__(1);
 
 
 /***/ },
-/* 1 */,
-/* 2 */
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	__webpack_require__(4);
+	var _base = __webpack_require__(3);
 
-	__webpack_require__(5);
+	var mapWrapper = document.getElementById('map');
+
+	var mapOptions = {
+		overlays: [{
+			'type': 'marker',
+			'title': 'Mestia Airport ',
+			'content': 'cotne sdsdsds',
+			'icon': 'http://investingeorgia.local.itdc.ge/uploads/photo/main/0/130.png',
+			'iconId': '130',
+			'position': {
+				'lat': 43.052539,
+				'lng': 42.748066
+			},
+			'catId': 92
+		}, {
+			'type': 'marker',
+			'title': 'Batumi Airport ',
+			'content': '',
+			'icon': 'http://investingeorgia.local.itdc.ge/uploads/photo/main/0/130.png',
+			'iconId': '130',
+			'position': {
+				'lat': 41.608501,
+				'lng': 41.597518
+			},
+			'catId': 92
+		}, {
+			'type': 'marker',
+			'title': 'Kutaisi Airport ',
+			'content': '',
+			'icon': 'http://investingeorgia.local.itdc.ge/uploads/photo/main/0/130.png',
+			'iconId': '130',
+			'position': {
+				'lat': 42.175272,
+				'lng': 42.48368
+			},
+			'catId': 92
+		}, {
+			'type': 'marker',
+			'title': 'Tbilisi Airport ',
+			'content': '',
+			'icon': 'http://investingeorgia.local.itdc.ge/uploads/photo/main/0/130.png',
+			'iconId': '130',
+			'position': {
+				'lat': 41.672743,
+				'lng': 44.957108
+			},
+			'catId': 92
+		}]
+	};
+
+	var _map = new _base.Map(mapWrapper, mapOptions);
 
 /***/ },
+/* 2 */,
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -262,58 +312,8 @@
 	// scaledSize: new google.maps.Size(36, 36)
 
 /***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _srcMarkerIcons = __webpack_require__(6);
-
-	describe('MarkerIcons', function () {
-		it('does not explode!', function () {
-			expect(function () {
-				new _srcMarkerIcons.MarkerIcons();
-			}).not.toThrow();
-		});
-		it('returns default icon for 0', function () {
-			var markerIcons = new _srcMarkerIcons.MarkerIcons();
-			expect(markerIcons.get(0)).toEqual({
-				id: 0,
-				thumb: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png',
-				title: 'default',
-				width: 22,
-				height: 40 });
-		});
-		it('you can retrive icon by id', function () {
-			var myIcon = {
-				id: 22,
-				thumb: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png',
-				title: 'default',
-				width: 22,
-				height: 40 };
-			var markerIcons = new _srcMarkerIcons.MarkerIcons([myIcon]);
-			expect(markerIcons.getById(22)).toEqual(myIcon);
-		});
-	});
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _srcBase = __webpack_require__(3);
-
-	describe('Map', function () {
-		it('does not explode if pass container', function () {
-			var mapContainer = document.createElement('div');
-			expect(function () {
-				new _srcBase.Map(mapContainer);
-			}).not.toThrow();
-		});
-	});
-
-/***/ },
+/* 4 */,
+/* 5 */,
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 

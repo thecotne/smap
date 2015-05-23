@@ -12,6 +12,7 @@
     "bower_components"
   ],
   "dependencies": {
-    "ramda": "~0.14.0"
+    "ramda": "~0.14.0",
+    "node-google-maps": "sakren/node-google-maps#~2.1.1"
   }
 }

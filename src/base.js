@@ -1,77 +1,30 @@
 import {MarkerIcons} from './MarkerIcons';
 import {lineStyles} from './lineStyles';
+import {merge, map, partial, bind} from 'ramda';
+import * as GoogleMapsLoader from 'node-google-maps/lib/Google';
 
-var R = require('ramda');
-var GoogleMapsLoader = require('google-maps');
+var defaultMapOptions = {
+	center: {
+		lat: 42.110449,
+		lng: 44.004879
+	},
+	zoom: 8
+};
 
-export class map {
-	constructor(_container, _markerIcons, _lineStyles) {
-		this.container = _container;
-		this.markerIcons = new MarkerIcons(_markerIcons);
-		this.lineStyles = R.merge(lineStyles, _lineStyles || {});
+export class Map {
+	constructor(container, mapOptions = {}, markerIcons = [], _lineStyles = {}) {
+		this.container = container;
+		this.mapOptions = merge(defaultMapOptions, mapOptions);
+		this.markerIcons = new MarkerIcons(markerIcons);
+		this.lineStyles = merge(lineStyles, _lineStyles);
 		this.shapes = [];
 
-		GoogleMapsLoader.load(this.googleApiLoaded.bind(this));
-	}
-	googleApiLoaded() {
-		google.maps.event.addDomListener(window, 'load', this.googleMapApiLoaded.bind(this));
+		GoogleMapsLoader.load(bind(this.googleMapApiLoaded, this) );
 	}
 	googleMapApiLoaded() {
-		var mapOptions = {
-			center: new google.maps.LatLng(42.110449, 44.004879),
-			zoom: 8,
-			disableDefaultUI: true,
-		};
-		this.map = new google.maps.Map(this.container, mapOptions);
+		this.map = new google.maps.Map(this.container, {});
+		this.fromObject(this.mapOptions);
 		this.infowindow = new google.maps.InfoWindow();
-
-		this.fromObject({
-			overlays: [{
-				"type": "marker",
-				"title": "Mestia Airport ",
-				"content": "cotne sdsdsds",
-				"icon": "http:\/\/investingeorgia.local.itdc.ge\/uploads\/photo\/main\/0\/130.png",
-				"iconId": "130",
-				"position": {
-					"lat": 43.052539,
-					"lng": 42.748066
-				},
-				"catId": 92
-			}, {
-				"type": "marker",
-				"title": "Batumi Airport ",
-				"content": "",
-				"icon": "http:\/\/investingeorgia.local.itdc.ge\/uploads\/photo\/main\/0\/130.png",
-				"iconId": "130",
-				"position": {
-					"lat": 41.608501,
-					"lng": 41.597518
-				},
-				"catId": 92
-			}, {
-				"type": "marker",
-				"title": "Kutaisi Airport ",
-				"content": "",
-				"icon": "http:\/\/investingeorgia.local.itdc.ge\/uploads\/photo\/main\/0\/130.png",
-				"iconId": "130",
-				"position": {
-					"lat": 42.175272,
-					"lng": 42.48368
-				},
-				"catId": 92
-			}, {
-				"type": "marker",
-				"title": "Tbilisi Airport ",
-				"content": "",
-				"icon": "http:\/\/investingeorgia.local.itdc.ge\/uploads\/photo\/main\/0\/130.png",
-				"iconId": "130",
-				"position": {
-					"lat": 41.672743,
-					"lng": 44.957108
-				},
-				"catId": 92
-			}]
-		});
 	}
 	setCenter(lat, lng) {
 		this.map.setCenter(new google.maps.LatLng(lat, lng));
@@ -99,8 +52,8 @@ export class map {
 				}
 
 				if (overlay.type == 'polygon') {
-					options.paths = R.map((path)=>{
-						return R.map((latLng)=>{
+					options.paths = map((path)=>{
+						return map((latLng)=>{
 							return new google.maps.LatLng(latLng.lat, latLng.lng);
 						}, path);
 					}, overlay.paths);
@@ -108,7 +61,7 @@ export class map {
 					var _overlay = new google.maps.Polygon(options);
 
 				} else if (overlay.type == "polyline") {
-					options.path = R.map((latLng)=>{
+					options.path = map((latLng)=>{
 						return new google.maps.LatLng(latLng.lat, latLng.lng)
 					});
 
@@ -187,7 +140,7 @@ export class map {
 	overlayAdded(type, overlay) {
 		var newShape = overlay;
 		if (type == 'marker' && overlay.content) {
-			var hendler = R.partial(R.bind(this.showMarker, this), overlay);
+			var hendler = partial(bind(this.showMarker, this), overlay);
 			google.maps.event.addListener(overlay, 'click', hendler);
 		};
 		newShape.type = type;
@@ -199,6 +152,5 @@ export class map {
 		this.infowindow.setContent(overlay.content);
 		this.infowindow.open(this.map, overlay);
 	}
-
 }
 
