@@ -1,4 +1,4 @@
-import {Map} from './base';
+import {Map} from './Map';
 
 var mapWrapper = document.getElementById('map');
 

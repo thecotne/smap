@@ -302,13 +302,13 @@
 
 	'use strict';
 
-	var _srcBase = __webpack_require__(3);
+	var _srcMap = __webpack_require__(3);
 
 	describe('Map', function () {
 		it('does not explode if pass container', function () {
 			var mapContainer = document.createElement('div');
 			expect(function () {
-				new _srcBase.Map(mapContainer);
+				new _srcMap.Map(mapContainer);
 			}).not.toThrow();
 		});
 	});

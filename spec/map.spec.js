@@ -1,4 +1,4 @@
-import {Map} from '../src/base';
+import {Map} from '../src/Map';
 
 describe('Map', () => {
 	it('does not explode if pass container', () => {

@@ -53,7 +53,7 @@
 
 	'use strict';
 
-	var _base = __webpack_require__(3);
+	var _Map = __webpack_require__(3);
 
 	var mapWrapper = document.getElementById('map');
 
@@ -105,7 +105,7 @@
 		}]
 	};
 
-	var _map = new _base.Map(mapWrapper, mapOptions);
+	var _map = new _Map.Map(mapWrapper, mapOptions);
 
 /***/ },
 /* 2 */,
