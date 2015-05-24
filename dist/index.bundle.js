@@ -142,6 +142,15 @@
 		zoom: 8
 	};
 
+	var commonOverlayOptions = ['title', 'content', 'fillColor', 'fillOpacity', 'strokeColor', 'strokeOpacity', 'strokeWeight', 'icon'];
+
+	var latLng = function latLng(_latLng) {
+		return new google.maps.LatLng(_latLng.lat, _latLng.lng);
+	};
+	var latLngBounds = function latLngBounds(b) {
+		return new google.maps.LatLngBounds(latLng(b.sw), latLng(b.ne));
+	};
+
 	var Map = (function () {
 		function Map(container) {
 			var mapOptions = arguments[1] === undefined ? {} : arguments[1];
@@ -170,7 +179,7 @@
 		}, {
 			key: 'setCenter',
 			value: function setCenter(lat, lng) {
-				this.map.setCenter(new google.maps.LatLng(lat, lng));
+				this.map.setCenter(latLng({ lat: lat, lng: lng }));
 			}
 		}, {
 			key: 'setZoom',
@@ -178,122 +187,99 @@
 				this.map.setZoom(zoom);
 			}
 		}, {
-			key: 'fromObject',
-			value: function fromObject(data) {
-				var _this = this;
-
-				if (data.zoom) {
-					this.setZoom(data.zoom);
-				};
-
-				if (data.center) {
-					this.setCenter(data.center.lat, data.center.lng);
+			key: 'addPolygon',
+			value: function addPolygon(overlayOptions) {
+				var options = (0, _ramda.pick)((0, _ramda.concat)(['paths'], commonOverlayOptions), overlayOptions);
+				options.paths = (0, _ramda.map)((0, _ramda.map)(latLng), options.paths);
+				var overlay = new google.maps.Polygon(options);
+				overlay.type = overlayOptions.type;
+				overlay.setMap(this.map);
+				this.shapes.push(overlay);
+			}
+		}, {
+			key: 'addPolyline',
+			value: function addPolyline(overlayOptions) {
+				var options = (0, _ramda.pick)((0, _ramda.concat)(['path', 'lineStyle'], commonOverlayOptions), overlayOptions);
+				options.path = (0, _ramda.map)(latLng);
+				var overlay = new google.maps.Polyline(options);
+				overlay.type = overlayOptions.type;
+				overlay.setMap(this.map);
+				this.shapes.push(overlay);
+			}
+		}, {
+			key: 'addRectangle',
+			value: function addRectangle(overlayOptions) {
+				var options = (0, _ramda.pick)((0, _ramda.concat)(['bounds'], commonOverlayOptions), overlayOptions);
+				options.bounds = latLngBounds(options.bounds);
+				var overlay = new google.maps.Rectangle(options);
+				overlay.type = overlayOptions.type;
+				overlay.setMap(this.map);
+				this.shapes.push(overlay);
+			}
+		}, {
+			key: 'addCircle',
+			value: function addCircle(overlayOptions) {
+				var options = (0, _ramda.pick)((0, _ramda.concat)(['center', 'radius'], commonOverlayOptions), overlayOptions);
+				options.center = latLng(options.center);
+				var overlay = new google.maps.Circle(options);
+				overlay.type = overlayOptions.type;
+				overlay.setMap(this.map);
+				this.shapes.push(overlay);
+			}
+		}, {
+			key: 'addMarker',
+			value: function addMarker(overlayOptions) {
+				var options = (0, _ramda.pick)((0, _ramda.concat)(['position', 'icon', 'iconId', 'iconOverPoint'], commonOverlayOptions), overlayOptions);
+				options.position = latLng(options.position);
+				if (this.markerIcons && options.iconId) {
+					options.iconId = parseInt(options.iconId);
+					options.iconOverPoint = !!options.iconOverPoint;
+					var icon = this.markerIcons.getById(options.iconId);
+					if (!icon) {
+						icon = this.markerIcons.getById(0);
+						options.iconId = 0;
+					}
+					options.icon = {
+						url: icon.thumb
+					};
+					if (options.iconOverPoint) {
+						options.icon.anchor = new google.maps.Point(icon.width / 2, icon.height / 2);
+					}
 				}
-
-				if (data.overlays) {
-					data.overlays.forEach(function (overlay) {
-						var options = {};
-						options.title = overlay.title || '';
-						options.content = overlay.content || '';
-
-						var _arr = ['fillColor', 'fillOpacity', 'strokeColor', 'strokeOpacity', 'strokeWeight', 'icon'];
-						for (var _i = 0; _i < _arr.length; _i++) {
-							var key = _arr[_i];
-							options[key] = overlay[key];
-						}
-
-						if (overlay.type == 'polygon') {
-							options.paths = (0, _ramda.map)(function (path) {
-								return (0, _ramda.map)(function (latLng) {
-									return new google.maps.LatLng(latLng.lat, latLng.lng);
-								}, path);
-							}, overlay.paths);
-
-							var _overlay = new google.maps.Polygon(options);
-						} else if (overlay.type == 'polyline') {
-							options.path = (0, _ramda.map)(function (latLng) {
-								return new google.maps.LatLng(latLng.lat, latLng.lng);
-							});
-
-							if (overlay.lineStyle) {
-								options.lineStyle = overlay.lineStyle;
-								if (_this.lineStyles) {
-									try {
-										if (overlay.lineStyle == 'solid') {
-											options.icons = [];
-											options.strokeOpacity = options._strokeOpacity || 1;
-										} else {
-											options.icons = _this.lineStyles[overlay.lineStyle](_this.activeItem.strokeWeight || _this.shapeDefaults.strokeWeight);
-											options._strokeOpacity = options.strokeOpacity;
-											options.strokeOpacity = 0;
-										}
-									} catch (e) {}
-								};
-							}
-							_overlay = new google.maps.Polyline(options);
-						} else if (overlay.type == 'rectangle') {
-							options.bounds = new google.maps.LatLngBounds(new google.maps.LatLng(overlay.bounds.sw.lat, overlay.bounds.sw.lng), new google.maps.LatLng(overlay.bounds.ne.lat, overlay.bounds.ne.lng));
-							_overlay = new google.maps.Rectangle(options);
-						} else if (overlay.type == 'circle') {
-							options.center = new google.maps.LatLng(overlay.center.lat, overlay.center.lng);;
-							options.radius = overlay.radius;
-							_overlay = new google.maps.Circle(options);
-						} else if (overlay.type == 'marker') {
-
-							options.position = new google.maps.LatLng(overlay.position.lat, overlay.position.lng);
-							if (overlay.icon) {
-								options.icon = overlay.icon;
-							}
-							if (_this.markerIcons && overlay.iconId) {
-
-								options.iconId = parseInt(overlay.iconId);
-								options.iconOverPoint = !!overlay.iconOverPoint;
-								var icon = _this.markerIcons.getById(options.iconId);
-								if (icon) {
-									if (options.iconOverPoint) {
-										options.icon = {
-											url: icon.thumb,
-											// size: new google.maps.Size(71, 71),
-											// origin: new google.maps.Point(0, 0),
-											anchor: new google.maps.Point(icon.width / 2, icon.height / 2) };
-									} else {
-										options.icon = {
-											url: icon.thumb
-										};
-									}
-								} else {
-									options.iconId = 0;
-									options.icon = {
-										url: _this.markerIcons.getById(0).thumb
-									};
-								}
-							}
-							_overlay = new google.maps.Marker(options);
-						}
-						_overlay.type = overlay.type;
-						_overlay.setMap(_this.map);
-
-						options.title = overlay.title || '';
-						options.content = overlay.content || '';
-						options.contId = overlay.contId || '';
-						options.catId = overlay.catId || '';
-						options.id = overlay.id || '';
-
-						_this.overlayAdded(_overlay.type, _overlay);
-					});
+				var overlay = new google.maps.Marker(options);
+				overlay.type = overlayOptions.type;
+				overlay.setMap(this.map);
+				var hendler = (0, _ramda.partial)((0, _ramda.bind)(this.showMarker, this), overlay);
+				google.maps.event.addListener(overlay, 'click', hendler);
+				this.shapes.push(overlay);
+			}
+		}, {
+			key: 'addOverlay',
+			value: function addOverlay(overlay) {
+				if (overlay.type == 'polygon') {
+					this.addPolygon(overlay);
+				} else if (overlay.type == 'polyline') {
+					this.addPolyline(overlay);
+				} else if (overlay.type == 'rectangle') {
+					this.addRectangle(overlay);
+				} else if (overlay.type == 'circle') {
+					this.addCircle(overlay);
+				} else if (overlay.type == 'marker') {
+					this.addMarker(overlay);
 				}
 			}
 		}, {
-			key: 'overlayAdded',
-			value: function overlayAdded(type, overlay) {
-				var newShape = overlay;
-				if (type == 'marker' && overlay.content) {
-					var hendler = (0, _ramda.partial)((0, _ramda.bind)(this.showMarker, this), overlay);
-					google.maps.event.addListener(overlay, 'click', hendler);
-				};
-				newShape.type = type;
-				this.shapes.push(newShape);
-				return newShape;
+			key: 'fromObject',
+			value: function fromObject(data) {
+				if (data.zoom) {
+					this.setZoom(data.zoom);
+				}
+				if (data.center) {
+					this.setCenter(data.center.lat, data.center.lng);
+				}
+				if (data.overlays) {
+					data.overlays.forEach((0, _ramda.bind)(this.addOverlay, this));
+				}
 			}
 		}, {
 			key: 'showMarker',
@@ -308,8 +294,6 @@
 	})();
 
 	exports.Map = Map;
-
-	// scaledSize: new google.maps.Size(36, 36)
 
 /***/ },
 /* 4 */,
