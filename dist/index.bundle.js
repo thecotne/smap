@@ -249,8 +249,10 @@
 				var overlay = new google.maps.Marker(options);
 				overlay.type = overlayOptions.type;
 				overlay.setMap(this.map);
-				var hendler = (0, _ramda.partial)((0, _ramda.bind)(this.showMarker, this), overlay);
-				google.maps.event.addListener(overlay, 'click', hendler);
+				if (overlay.content) {
+					var hendler = (0, _ramda.partial)((0, _ramda.bind)(this.showMarker, this), overlay);
+					google.maps.event.addListener(overlay, 'click', hendler);
+				};
 				this.shapes.push(overlay);
 			}
 		}, {
