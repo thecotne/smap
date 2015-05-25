@@ -3,6 +3,8 @@ import {lineStyles} from './lineStyles';
 import {merge, map, partial, bind, pick, concat} from 'ramda';
 import * as GoogleMapsLoader from 'node-google-maps/lib/Google';
 
+import {latLng, latLngBounds} from './helpers';
+
 var defaultMapOptions = {
 	center: {
 		lat: 42.110449,
@@ -21,12 +23,6 @@ var commonOverlayOptions = [
 	'strokeWeight',
 	'icon',
 ];
-
-
-var latLng = latLng => new google.maps.LatLng(latLng.lat, latLng.lng);
-var latLngBounds = b => new google.maps.LatLngBounds(latLng(b.sw), latLng(b.ne));
-
-
 
 export class Map {
 	constructor(container, mapOptions = {}, markerIcons = [], _lineStyles = {}) {
