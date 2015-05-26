@@ -1,4 +1,4 @@
-import {MarkerIcons} from './MarkerIcons';
+import MarkerIconsCollection from './MarkerIconsCollection';
 import {lineStyles} from './lineStyles';
 import {merge, map, partial, bind, pick, concat} from 'ramda';
 import * as GoogleMapsLoader from 'node-google-maps/lib/Google';
@@ -28,7 +28,13 @@ export class Map {
 	constructor(container, mapOptions = {}, markerIcons = [], _lineStyles = {}) {
 		this.container = container;
 		this.mapOptions = merge(defaultMapOptions, mapOptions);
-		this.markerIcons = new MarkerIcons(markerIcons);
+
+		if (markerIcons) {
+			this.markerIcons = markerIcons;
+		} else {
+			this.markerIcons = new MarkerIconsCollection();
+		}
+
 		this.lineStyles = merge(lineStyles, _lineStyles);
 		this.shapes = [];
 

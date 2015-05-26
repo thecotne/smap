@@ -4,7 +4,7 @@ import {concat, find, propEq} from 'ramda';
  * default marker icons
  * @type {Array}
  */
-var defaultIcons = [{
+export var defaultIcons = [{
 	id: 0,
 	thumb: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png',
 	title: 'default',
@@ -12,21 +12,13 @@ var defaultIcons = [{
 	height: 40,
 }];
 
-export class MarkerIcons {
+export default class MarkerIconsCollection {
 	/**
 	 * MarkerIcons Collection
 	 * @param  {Array} marker icon object array
 	 */
 	constructor (icons = []) {
 		this.icons = concat(defaultIcons, icons);
-	}
-	/**
-	 * get by index
-	 * @param  {Number} index
-	 * @return {Object} marker icon object
-	 */
-	get (index) {
-		return this.icons[index];
 	}
 	/**
 	 * get by id

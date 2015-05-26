@@ -1,2 +1,2 @@
-import './MarkerIcons.spec';
+import './MarkerIconsCollection.spec';
 import './map.spec';
