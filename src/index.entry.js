@@ -52,5 +52,8 @@ var mapOptions = {
 	]
 };
 
-var _map = new Map(mapWrapper, mapOptions);
+var _map = new Map({
+	container: mapWrapper,
+	mapOptions: mapOptions
+});
 

@@ -4,7 +4,7 @@ describe('Map', () => {
 	it('does not explode if pass container', () => {
 		var mapContainer = document.createElement('div');
 		expect(() => {
-			new Map(mapContainer);
+			new Map({container: mapContainer});
 		}).not.toThrow();
 	});
 

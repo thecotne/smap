@@ -25,7 +25,7 @@ var commonOverlayOptions = [
 ];
 
 export class Map {
-	constructor(container, mapOptions = {}, markerIcons = [], _lineStyles = {}) {
+	constructor({container, mapOptions, markerIcons, _lineStyles, googleMapsWrapper}) {
 		this.container = container;
 		this.mapOptions = merge(defaultMapOptions, mapOptions);
 
