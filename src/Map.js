@@ -1,9 +1,9 @@
 import MarkerIconsCollection from './MarkerIconsCollection';
 import {lineStyles} from './lineStyles';
-import {merge, map, partial, bind, pick, concat} from 'ramda';
+import {merge, map, partial, bind, concat} from 'ramda';
 import * as GoogleMapsLoader from 'node-google-maps/lib/Google';
 
-import {latLng, latLngBounds} from './helpers';
+import {latLng, latLngBounds, pickOpts} from './helpers';
 
 var defaultMapOptions = {
 	center: {
@@ -13,16 +13,6 @@ var defaultMapOptions = {
 	zoom: 8
 };
 
-var commonOverlayOptions = [
-	'title',
-	'content',
-	'fillColor',
-	'fillOpacity',
-	'strokeColor',
-	'strokeOpacity',
-	'strokeWeight',
-	'icon',
-];
 
 export class Map {
 	constructor({container, mapOptions, markerIcons, _lineStyles, googleMapsWrapper}) {
@@ -52,7 +42,7 @@ export class Map {
 		this.map.setZoom(zoom);
 	}
 	addPolygon(overlayOptions) {
-		var options = pick(concat(['paths'], commonOverlayOptions), overlayOptions);
+		var options = pickOpts(['paths'], overlayOptions);
 		options.paths = map(map(latLng), options.paths);
 		var overlay = new google.maps.Polygon(options);
 		overlay.type = overlayOptions.type;
@@ -60,7 +50,7 @@ export class Map {
 		this.shapes.push(overlay);
 	}
 	addPolyline(overlayOptions) {
-		var options = pick(concat(['path', 'lineStyle'], commonOverlayOptions), overlayOptions);
+		var options = pickOpts(['path', 'lineStyle'], overlayOptions);
 		options.path = map(latLng);
 		var overlay = new google.maps.Polyline(options);
 		overlay.type = overlayOptions.type;
@@ -68,7 +58,7 @@ export class Map {
 		this.shapes.push(overlay);
 	}
 	addRectangle(overlayOptions) {
-		var options = pick(concat(['bounds'], commonOverlayOptions), overlayOptions);
+		var options = pickOpts(['bounds'], overlayOptions);
 		options.bounds = latLngBounds(options.bounds);
 		var overlay = new google.maps.Rectangle(options);
 		overlay.type = overlayOptions.type;
@@ -76,7 +66,7 @@ export class Map {
 		this.shapes.push(overlay);
 	}
 	addCircle(overlayOptions) {
-		var options = pick(concat(['center', 'radius'], commonOverlayOptions), overlayOptions);
+		var options = pickOpts(['center', 'radius'], overlayOptions);
 		options.center = latLng(options.center);
 		var overlay = new google.maps.Circle(options);
 		overlay.type = overlayOptions.type;
@@ -84,7 +74,7 @@ export class Map {
 		this.shapes.push(overlay);
 	}
 	addMarker(overlayOptions) {
-		var options = pick(concat(['position', 'icon', 'iconId', 'iconOverPoint'], commonOverlayOptions), overlayOptions);
+		var options = pickOpts(['position', 'icon', 'iconId', 'iconOverPoint'], overlayOptions);
 		options.position = latLng(options.position);
 		if (options.iconId) {
 			var icon = this.markerIcons.getById(options.iconId);
