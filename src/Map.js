@@ -86,9 +86,7 @@ export class Map {
 	addMarker(overlayOptions) {
 		var options = pick(concat(['position', 'icon', 'iconId', 'iconOverPoint'], commonOverlayOptions), overlayOptions);
 		options.position = latLng(options.position);
-		if (this.markerIcons && options.iconId) {
-			options.iconId = parseInt(options.iconId);
-			options.iconOverPoint = !! options.iconOverPoint;
+		if (options.iconId) {
 			var icon = this.markerIcons.getById(options.iconId);
 			if ( ! icon) {
 				icon = this.markerIcons.getById(0);
