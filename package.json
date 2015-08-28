@@ -5,7 +5,8 @@
   "author": "cotne nazarashvili <cotne.95@gmail.com>",
   "homepage": "https://github.com/thecotne/smap",
   "scripts": {
-    "test": ".\\node_modules\\.bin\\jasmine .\\dist\\spec.bundle.js"
+    "test": ".\\node_modules\\.bin\\jasmine .\\dist\\spec.bundle.js",
+    "postinstall": ".\\node_modules\\.bin\\gulp"
   },
   "main": "bundle.js",
   "repository": {
