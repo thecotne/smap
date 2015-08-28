@@ -12,23 +12,15 @@ gulp.task('js', function () {
 		.pipe(named())
 		.pipe(gulpWebpack({
 			module: {
-				noParse: [/bower_components/],
+				// noParse: [/node_modules/],
 				loaders: [
 					{
 						test: /\.js$/,
-						exclude: /node_modules|bower_components/,
+						// exclude: /node_modules/,
 						loader: 'babel-loader'
 					}
 				],
-			},
-			resolve: {
-				root: [path.join(__dirname, "bower_components")]
-			},
-			plugins: [
-				new webpack.ResolverPlugin(
-					new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", ["main"])
-				)
-			]
+			}
 		}))
 		.pipe(rename(function (path) {
 			path.basename = path.basename.replace('.entry', '.bundle');

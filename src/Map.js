@@ -1,7 +1,7 @@
 import MarkerIconsCollection from './MarkerIconsCollection';
 import {lineStyles} from './lineStyles';
 import {merge, map, partial, bind, concat} from 'ramda';
-import * as GoogleMapsLoader from 'node-google-maps/lib/Google';
+import GoogleMapsLoader from 'google-maps';
 
 import {latLng, latLngBounds, pickOpts} from './helpers';
 

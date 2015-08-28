@@ -15,7 +15,10 @@
   "bugs": {
     "url": "https://github.com/thecotne/smap/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "google-maps": "^3.1.0",
+    "ramda": "^0.17.1"
+  },
   "devDependencies": {
     "babel-core": "5.*",
     "babel-loader": "5.*",
