@@ -1,7 +1,6 @@
 var R = require('ramda');
 var $ = require('jquery');
 
-
 var Legend = Class({
 	'protected wrapper': null,
 	'protected list': null,

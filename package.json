@@ -24,6 +24,7 @@
     "babel-core": "5.*",
     "babel-loader": "5.*",
     "gulp": "3.*",
+    "gulp-jsdoc": "^0.1.4",
     "gulp-rename": "1.*",
     "gulp-watch": "4.*",
     "gulp-webpack": "1.*",

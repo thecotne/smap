@@ -3,7 +3,13 @@ import {lineStyles} from './lineStyles';
 import {merge, map, partial, bind, concat} from 'ramda';
 import GoogleMapsLoader from 'google-maps';
 
-import {latLng, latLngBounds, pickOpts} from './helpers';
+import {
+	latLng,
+	latLngBounds,
+	pickOpts,
+	setCenter,
+	setZoom
+} from './helpers';
 
 var defaultMapOptions = {
 	center: {
@@ -35,12 +41,7 @@ export class Map {
 		this.fromObject(this.mapOptions);
 		this.infowindow = new google.maps.InfoWindow();
 	}
-	setCenter(lat, lng) {
-		this.map.setCenter(latLng({lat, lng}));
-	}
-	setZoom(zoom) {
-		this.map.setZoom(zoom);
-	}
+
 	addPolygon(overlayOptions) {
 		var options = pickOpts(['paths'], overlayOptions);
 		options.paths = map(map(latLng), options.paths);
@@ -113,10 +114,10 @@ export class Map {
 	}
 	fromObject(data) {
 		if (data.zoom) {
-			this.setZoom(data.zoom);
+			setZoom(data.zoom, this.map);
 		}
 		if (data.center) {
-			this.setCenter(data.center.lat, data.center.lng);
+			setCenter(data.center, this.map);
 		}
 		if (data.overlays) {
 			data.overlays.forEach(bind(this.addOverlay, this));

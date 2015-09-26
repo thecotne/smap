@@ -1,3 +1,7 @@
+/**
+ * lineStyles
+ * @namespace lineStyles
+ */
 export var lineStyles = {
 	solid (strokeWeight) {},
 	dashed (strokeWeight) {
